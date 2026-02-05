@@ -1,11 +1,10 @@
-import React from 'react'
-import LoginPage from './components/pages/LoginPage'
+import AppRoutes from './components/Routes/Routes'
 import './App.css'
 
 function App() {
   return (
     <div className="App">
-      <LoginPage />
+      <AppRoutes />
     </div>
   )
 }
