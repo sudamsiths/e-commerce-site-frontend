@@ -1,6 +1,8 @@
 import NikeLogo from '../../assets/images/Nike.png';
+ import{ useNavigate } from 'react-router-dom';
 
 function LoginPage() {
+  const navigate = useNavigate();
   return (
     <>
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 mt-auto mb-auto">
@@ -45,12 +47,12 @@ function LoginPage() {
                   Password
                 </label>
                 <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-semibold text-indigo-400 hover:text-indigo-300"
+                  <button
+                    type="button"
+                    className="font-semibold text-indigo-400 hover:text-indigo-300 bg-none border-none cursor-pointer p-0"
                   >
                     Forgot password?
-                  </a>
+                  </button>
                 </div>
               </div>
               <div className="mt-2">
@@ -77,12 +79,13 @@ function LoginPage() {
 
           <p className="mt-10 text-center text-sm/6 text-gray-400">
             Not a member?{" "}
-            <a
-              href="#"
-              className="font-semibold text-indigo-400 hover:text-indigo-300"
+            <button
+              type="button"
+              onClick={() => navigate("/signup")}
+              className="font-semibold text-indigo-400 hover:text-indigo-300 bg-none border-none cursor-pointer p-0"
             >
-              Start a 14 day free trial
-            </a>
+              Sign Up Here
+            </button>
           </p>
         </div>
       </div>
