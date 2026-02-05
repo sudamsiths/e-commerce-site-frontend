@@ -62,20 +62,22 @@ function LoginPage() {
           onClose={() => setToast(null)}
         />
       )}
-      <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 mt-auto mb-auto">
-        <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img alt="Your Logo" src={NikeLogo} className="mx-auto h-50 w-auto" />
-          <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-white">
+      <div className="flex min-h-screen flex-col justify-center px-6 py-12 lg:px-8 bg-linear-to-br from-gray-900 via-black to-indigo-900">
+        <div className="sm:mx-auto sm:w-full sm:max-w-sm animate-fade-in">
+          <div className="transform hover:scale-105 transition-transform duration-300">
+            <img alt="Your Logo" src={NikeLogo} className="mx-auto h-50 w-auto drop-shadow-2xl" />
+          </div>
+          <h2 className="mt-10 text-center text-3xl font-bold tracking-tight bg-linear-to-r from-white via-indigo-200 to-indigo-400 bg-clip-text text-transparent">
             Sign in to your account
           </h2>
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form className="space-y-6">
+          <form className="space-y-6 bg-white/5 backdrop-blur-xl p-8 rounded-2xl shadow-2xl border border-white/10 hover:border-indigo-500/50 transition-all duration-300">
             <div>
               <label
                 htmlFor="email"
-                className="block text-sm/6 font-medium text-gray-100"
+                className="block text-sm font-semibold text-indigo-200 mb-2"
               >
                 Email address
               </label>
@@ -88,7 +90,8 @@ function LoginPage() {
                   required
                   autoComplete="email"
                   onChange={(e)=>{setLoginData({...loginData, email: e.currentTarget.value})}}
-                  className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+                  className="block w-full rounded-xl bg-white/10 px-4 py-3 text-base text-white border-2 border-white/20 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 outline-none transition-all duration-300 placeholder:text-gray-400 hover:bg-white/15"
+                  placeholder="Enter your email"
                 />
               </div>
             </div>
@@ -97,14 +100,14 @@ function LoginPage() {
               <div className="flex items-center justify-between">
                 <label
                   htmlFor="password"
-                  className="block text-sm/6 font-medium text-gray-100"
+                  className="block text-sm font-semibold text-indigo-200"
                 >
                   Password
                 </label>
                 <div className="text-sm">
                   <button
                     type="button"
-                    className="font-semibold text-indigo-400 hover:text-indigo-300 bg-none border-none cursor-pointer p-0"
+                    className="font-semibold text-indigo-300 hover:text-indigo-200 bg-none border-none cursor-pointer p-0 transition-colors duration-200 underline decoration-dashed"
                   >
                     Forgot password?
                   </button>
@@ -119,7 +122,8 @@ function LoginPage() {
                   onChange={(e)=>{setLoginData({...loginData,password:e.target.value})}}
                   required
                   autoComplete="current-password"
-                  className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
+                  className="block w-full rounded-xl bg-white/10 px-4 py-3 text-base text-white border-2 border-white/20 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-500/20 outline-none transition-all duration-300 placeholder:text-gray-400 hover:bg-white/15"
+                  placeholder="Enter your password"
                 />
               </div>
             </div>
@@ -128,19 +132,19 @@ function LoginPage() {
               <button
                 type="button"
                 onClick={Response}
-                className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+                className="flex w-full justify-center rounded-xl bg-linear-to-r from-indigo-600 to-indigo-500 px-4 py-3 text-base font-bold text-white shadow-xl hover:shadow-indigo-500/50 hover:from-indigo-500 hover:to-indigo-600 focus-visible:outline-4 focus-visible:outline-offset-2 focus-visible:outline-indigo-500 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
               >
                 Sign in
               </button>
             </div>
           </form>
 
-          <p className="mt-10 text-center text-sm/6 text-gray-400">
+          <p className="mt-10 text-center text-sm text-gray-300">
             Not a member?{" "}
             <button
               type="button"
               onClick={() => navigate("/signup")}
-              className="font-semibold text-indigo-400 hover:text-indigo-300 bg-none border-none cursor-pointer p-0"
+              className="font-semibold text-indigo-300 hover:text-indigo-200 bg-none border-none cursor-pointer p-0 transition-colors duration-200 underline decoration-wavy"
             >
               Sign Up Here
             </button>

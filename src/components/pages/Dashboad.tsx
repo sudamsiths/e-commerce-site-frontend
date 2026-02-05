@@ -1,7 +1,10 @@
+import Navbar from "../ui/Navbar"
 
 function Dashboad() {
   return (
-    <div>Dashboad</div>
+    <>
+     <Navbar />
+    </>
   )
 }
 
