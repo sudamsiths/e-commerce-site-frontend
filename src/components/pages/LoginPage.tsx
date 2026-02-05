@@ -1,8 +1,35 @@
+import { useState } from "react";
 import NikeLogo from "../../assets/images/Nike.png";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function LoginPage() {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
+
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
+
+
+  const Response = async()=>{
+    try{
+      const Data = await axios.post("http://localhost:8080/api/v1/users/signIn",{
+      email: loginData.email,
+      password: loginData.password})
+
+      if(Data.status === 200){
+         alert("Login Successful Navigated to Dashboard");
+        navigate("/dashboard");
+      }    
+      console.log(Data);
+      
+    }
+    catch(error){
+      console.error("Login failed:", error);
+    }
+  }
+
   return (
     <>
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 mt-auto mb-auto">
@@ -24,11 +51,13 @@ function LoginPage() {
               </label>
               <div className="mt-2">
                 <input
+                value={loginData.email}
                   id="email"
                   name="email"
                   type="email"
                   required
                   autoComplete="email"
+                  onChange={(e)=>{setLoginData({...loginData, email: e.currentTarget.value})}}
                   className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
                 />
               </div>
@@ -53,9 +82,11 @@ function LoginPage() {
               </div>
               <div className="mt-2">
                 <input
+                value={loginData.password}
                   id="password"
                   name="password"
                   type="password"
+                  onChange={(e)=>{setLoginData({...loginData,password:e.target.value})}}
                   required
                   autoComplete="current-password"
                   className="block w-full rounded-md bg-white/5 px-3 py-1.5 text-base text-white outline-1 -outline-offset-1 outline-white/10 placeholder:text-gray-500 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-500 sm:text-sm/6"
@@ -66,6 +97,7 @@ function LoginPage() {
             <div>
               <button
                 type="submit"
+                onClick={Response}
                 className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
               >
                 Sign in
