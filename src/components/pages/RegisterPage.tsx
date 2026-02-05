@@ -1,5 +1,7 @@
+import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+
 
 function RegisterPage() {
   const navigate = useNavigate();
@@ -12,9 +14,25 @@ function RegisterPage() {
     userName: "",
   });
 
-  function show() {
-    console.log(userData);
+  const RegisterUser = async () => {
+    const response = await axios.post("http://localhost:8080/api/v1/users/createUser", {
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      password: userData.password,
+      confirmPassword: userData.confirmPassword,
+      userName: userData.userName
+    });
+    setUserData({
+      firstName: "",
+      lastName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      userName: "",
+    });
   }
+
   return (
     <>
       <div className="min-h-screen bg-black py-12">
@@ -154,7 +172,7 @@ function RegisterPage() {
             <div className="mt-8">
               <button
                 type="button"
-                onClick={show}
+                onClick={RegisterUser}
                 className="w-full py-3.5 px-5 text-sm font-semibold tracking-wide rounded-lg cursor-pointer text-white bg-linear-to-r from-indigo-600 focus:outline-0 focus:ring-4 focus:ring-indigo-300 transition-all shadow-lg hover:shadow-xl"
               >
                 Create Account
