@@ -14,7 +14,8 @@ function RegisterPage() {
     userName: "",
   });
 
-  const RegisterUser = async () => {
+const RegisterUser = async () => {
+  try {
     const response = await axios.post("http://localhost:8080/api/v1/users/createUser", {
       firstName: userData.firstName,
       lastName: userData.lastName,
@@ -31,7 +32,13 @@ function RegisterPage() {
       confirmPassword: "",
       userName: "",
     });
+    if (response.status === 200) {
+      navigate("/login");
+    }
+  } catch (error) {
+    console.error("Registration failed:", error);
   }
+};
 
   return (
     <>
