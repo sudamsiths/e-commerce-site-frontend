@@ -2,6 +2,7 @@ import { useState } from "react";
 import NikeLogo from "../../assets/images/Nike.png";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Toast from "../ui/Toast";
 
 function LoginPage() {
     const navigate = useNavigate();
@@ -11,6 +12,11 @@ function LoginPage() {
     password: "",
   });
 
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "success" | "error" | "info";
+  } | null>(null);
+
 
   const Response = async()=>{
     try{
@@ -19,19 +25,43 @@ function LoginPage() {
       password: loginData.password})
 
       if(Data.status === 200){
-         alert("Login Successful Navigated to Dashboard");
-        navigate("/dashboard");
+        setLoginData({
+          email: "",
+          password: "",
+        });
+        setToast({
+          message: "Login successful! Redirecting to dashboard...",
+          type: "success"
+        });
+        setTimeout(() => {
+          navigate("/dashboard");
+        }, 1000);
       }    
-      console.log(Data);
-      
+      else {
+        setToast({
+          message: "Login failed. Please check your credentials.",
+          type: "error"
+        });
+      }
     }
     catch(error){
       console.error("Login failed:", error);
+      setToast({
+        message: "Login failed. Please try again.",
+        type: "error"
+      });
     }
   }
 
   return (
     <>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8 mt-auto mb-auto">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
           <img alt="Your Logo" src={NikeLogo} className="mx-auto h-50 w-auto" />
@@ -41,7 +71,7 @@ function LoginPage() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-          <form action="#" method="POST" className="space-y-6">
+          <form className="space-y-6">
             <div>
               <label
                 htmlFor="email"
@@ -96,7 +126,7 @@ function LoginPage() {
 
             <div>
               <button
-                type="submit"
+                type="button"
                 onClick={Response}
                 className="flex w-full justify-center rounded-md bg-indigo-500 px-3 py-1.5 text-sm/6 font-semibold text-white hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
               >

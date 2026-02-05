@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Toast from "../ui/Toast";
 
 
 function RegisterPage() {
@@ -14,6 +15,11 @@ function RegisterPage() {
     username: "",
   });
 
+  const [toast, setToast] = useState<{
+    message: string;
+    type: "success" | "error" | "info";
+  } | null>(null);
+
 const RegisterUser = async () => {
   try {
     const response = await axios.post("http://localhost:8080/api/v1/users/createUser", {
@@ -24,27 +30,42 @@ const RegisterUser = async () => {
       confirmPassword: userData.confirmPassword,
       username: userData.username
     });
-    setUserData({
-      firstName: "",
-      lastName: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      username: "",
-    });
-    console.log(response);
     
-    if (response.status === 200) {
-      alert("Registration successful! Please log in.");
-      navigate("/");
+    if (response.status === 200 || response.status === 201) {
+      setUserData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        username: "",
+      });
+      setToast({
+        message: "Registration successful! Redirecting to login...",
+        type: "success"
+      });
+      setTimeout(() => {
+        navigate("/");
+      }, 1500);
     }
   } catch (error) {
     console.error("Registration failed:", error);
+    setToast({
+      message: "Registration failed. Please try again.",
+      type: "error"
+    });
   }
 };
 
   return (
     <>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
       <div className="min-h-screen bg-black py-12">
         <div className="text-center bg-linear-to-r min-h-50 sm:p-6 p-4 rounded-t-2xl max-w-4xl max-md:max-w-xl mx-4 md:mx-auto">
           <h1 className="sm:text-4xl text-3xl text-white font-bold mt-8">
