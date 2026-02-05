@@ -11,7 +11,7 @@ function RegisterPage() {
     email: "",
     password: "",
     confirmPassword: "",
-    userName: "",
+    username: "",
   });
 
 const RegisterUser = async () => {
@@ -22,7 +22,7 @@ const RegisterUser = async () => {
       email: userData.email,
       password: userData.password,
       confirmPassword: userData.confirmPassword,
-      userName: userData.userName
+      username: userData.username
     });
     setUserData({
       firstName: "",
@@ -30,10 +30,13 @@ const RegisterUser = async () => {
       email: "",
       password: "",
       confirmPassword: "",
-      userName: "",
+      username: "",
     });
+    console.log(response);
+    
     if (response.status === 200) {
-      navigate("/login");
+      alert("Registration successful! Please log in.");
+      navigate("/");
     }
   } catch (error) {
     console.error("Registration failed:", error);
@@ -117,7 +120,7 @@ const RegisterUser = async () => {
               </div>
               <div>
                 <label
-                  htmlFor="Username"
+                  htmlFor="username"
                   className="text-slate-900 text-sm font-semibold mb-2 block"
                 >
                   User Name
@@ -125,14 +128,14 @@ const RegisterUser = async () => {
                 <input
                   id="username"
                   name="username"
-                  value={userData.userName}
+                  value={userData.username}
                   onChange={(e)=>{
-                    setUserData({...userData, userName: e.currentTarget.value})
+                    setUserData({...userData, username: e.currentTarget.value})
                   }
                   }
                   type="text"
                   className="bg-slate-50 focus:bg-white w-full text-sm text-slate-900 px-4 py-3 rounded-lg border border-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 outline-0 transition-all"
-                  placeholder="Enter user name"
+                  placeholder="Enter username"
                 />
               </div>
               <div>
