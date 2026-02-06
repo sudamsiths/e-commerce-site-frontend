@@ -143,6 +143,11 @@ function Navbar() {
           >
             Login
           </button>
+           <button id='button-Add' 
+            onClick={() => navigate('/add-product')}
+          >
+            Add Products
+          </button>
         </div>
       </nav>
     </>
