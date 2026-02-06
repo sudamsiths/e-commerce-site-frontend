@@ -1,13 +1,24 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 
+interface Product {
+  id: string | number;
+  name: string;
+  description: string;
+  imageUrls: string[];
+  price: number;
+  stockQuantity: number;
+  category: string;
+}
+
 function ProductList() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   const fetchProducts = async () => {
     try {
       const res = await axios.get("http://localhost:8080/api/v1/products/getall");
+      console.log("Products:", res.data);
       setProducts(res.data);
     } catch (error) {
       console.error("Error fetching products:", error);
@@ -16,13 +27,25 @@ function ProductList() {
     }
   };
 
+  const getImageUrl = (imageUrls: string[]) => {
+    if (!imageUrls || imageUrls.length === 0) {
+      return "https://via.placeholder.com/300x300/9333EA/FFFFFF?text=No+Image";
+    }
+    // If it's a relative path, prepend the backend URL
+    const imageUrl = imageUrls[0];
+    if (imageUrl.startsWith('/uploads')) {
+      return `http://localhost:8080${imageUrl}`;
+    }
+    return imageUrl;
+  };
+
   useEffect(() => {
     fetchProducts();
   }, []);
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-xl font-semibold">
+      <div className="min-h-screen flex items-center justify-center text-xl font-semibold text-white">
         Loading products...
       </div>
     );
@@ -30,14 +53,14 @@ function ProductList() {
 
   if (products.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-xl font-semibold">
+      <div className="min-h-screen flex items-center justify-center text-xl font-semibold text-white">
         No products found 😕
       </div>
     );
   }
 
   return (
-    <div className="bg-gradient-to-br from-gray-50 via-purple-50 to-pink-50 min-h-screen py-12">
+    <div className="py-12">
       <div className="container mx-auto flex flex-wrap items-start px-4">
 
         {/* Header */}
@@ -45,7 +68,7 @@ function ProductList() {
           <h1 className="text-4xl lg:text-5xl text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-600 font-extrabold tracking-tight">
             Best Sellers
           </h1>
-          <p className="text-gray-600 mt-2 text-lg">
+          <p className="text-gray-300 mt-2 text-lg">
             Discover our most popular products
           </p>
         </div>
@@ -61,9 +84,12 @@ function ProductList() {
               {/* Image */}
               <figure className="mb-3 relative overflow-hidden rounded-xl bg-gradient-to-br from-purple-100 to-pink-100 p-4">
                 <img
-                  src={product.imageUrl}
+                  src={getImageUrl(product.imageUrls)}
                   alt={product.name}
-                  className="h-64 mx-auto transform group-hover:scale-110 transition duration-500"
+                  onError={(e) => {
+                    e.currentTarget.src = "https://via.placeholder.com/300x300/9333EA/FFFFFF?text=No+Image";
+                  }}
+                  className="h-64 w-full object-contain mx-auto transform group-hover:scale-110 transition duration-500"
                 />
                 <div className="absolute top-2 right-2 bg-purple-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
                   NEW
