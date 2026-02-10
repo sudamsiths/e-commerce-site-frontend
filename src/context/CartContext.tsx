@@ -28,7 +28,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
         return saved ? JSON.parse(saved) : [];
     });
 
-    // useEffect එකක් add කරන්න:
     useEffect(() => {
         localStorage.setItem('cart', JSON.stringify(cartItems));
     }, [cartItems]);
