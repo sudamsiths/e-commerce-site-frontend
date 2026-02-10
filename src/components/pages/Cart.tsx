@@ -1,58 +1,10 @@
-import { useState } from 'react';
 import { Trash2, Plus, Minus, ShoppingBag, ArrowLeft, CreditCard } from 'lucide-react';
 import { useNavigate } from 'react-router';
-
-
-interface CartItem {
-  id: number;
-  name: string;
-  price: number;
-  quantity: number;
-  image: string;
-  category: string;
-}
+import { useCart } from '../../context/CartContext';
 
 function Cart() {
-    const navigate = useNavigate();
-  const [cartItems, setCartItems] = useState<CartItem[]>([
-    {
-      id: 1,
-      name: 'Premium Wireless Headphones',
-      price: 299.99,
-      quantity: 1,
-      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&h=500&fit=crop',
-      category: 'Electronics'
-    },
-    {
-      id: 2,
-      name: 'Smart Watch Pro',
-      price: 449.99,
-      quantity: 2,
-      image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&h=500&fit=crop',
-      category: 'Wearables'
-    },
-    {
-      id: 3,
-      name: 'Designer Backpack',
-      price: 89.99,
-      quantity: 1,
-      image: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&h=500&fit=crop',
-      category: 'Fashion'
-    }
-  ]);
-
-  const updateQuantity = (id: number, newQuantity: number) => {
-    if (newQuantity < 1) return;
-    setCartItems(items =>
-      items.map(item =>
-        item.id === id ? { ...item, quantity: newQuantity } : item
-      )
-    );
-  };
-
-  const removeItem = (id: number) => {
-    setCartItems(items => items.filter(item => item.id !== id));
-  };
+  const navigate = useNavigate();
+  const { cartItems, updateQuantity, removeFromCart } = useCart();
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const tax = subtotal * 0.1;
@@ -142,7 +94,7 @@ function Cart() {
 
                         {/* Remove Button */}
                         <button
-                          onClick={() => removeItem(item.id)}
+                          onClick={() => removeFromCart(item.id)}
                           className="p-3 rounded-lg hover:bg-red-50 text-red-500 hover:text-red-600 transition-all group"
                         >
                           <Trash2 className="w-5 h-5 group-hover:scale-110 transition-transform" />

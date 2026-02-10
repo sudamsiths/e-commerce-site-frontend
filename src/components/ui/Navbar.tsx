@@ -1,10 +1,12 @@
 import Logo from "../../assets/images/Nike-Logo-navbar.png";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useCart } from "../../context/CartContext";
 
 function Navbar() {
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { cartCount } = useCart();
 
   return (
     <>
@@ -70,6 +72,17 @@ function Navbar() {
             Contact
           </button>
           <button
+            onClick={() => navigate("/cart")}
+            className="flex items-center justify-between w-full py-2 px-3 hover:bg-indigo-50 hover:text-indigo-600 rounded-lg transition-all duration-200 font-medium"
+          >
+            <span>Cart</span>
+            {cartCount > 0 && (
+              <span className="bg-indigo-600 text-white text-xs font-bold px-2 py-1 rounded-full">
+                {cartCount}
+              </span>
+            )}
+          </button>
+          <button
             onClick={() => navigate("/")}
             className="w-full cursor-pointer px-6 py-2.5 mt-2 bg-linear-to-r from-indigo-500 to-indigo-600 hover:from-indigo-600 hover:to-indigo-700 transition-all duration-300 text-white rounded-full text-sm font-semibold shadow-lg hover:shadow-xl transform hover:scale-105"
           >
@@ -133,28 +146,32 @@ function Navbar() {
           </div>
 
           <div className="relative cursor-pointer group">
-            <div className="p-2 hover:bg-indigo-50 rounded-full transition-all duration-300">
-              <button onClick={() => navigate("/cart")} className="relative">
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 14 14"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-                className="group-hover:scale-110 transition-transform duration-300 cursor-pointer"
-              >
-                <path
-                  d="M.583.583h2.333l1.564 7.81a1.17 1.17 0 0 0 1.166.94h5.67a1.17 1.17 0 0 0 1.167-.94l.933-4.893H3.5m2.333 8.75a.583.583 0 1 1-1.167 0 .583.583 0 0 1 1.167 0m6.417 0a.583.583 0 1 1-1.167 0 .583.583 0 0 1 1.167 0"
-                  stroke="#615fff"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              </button>
-            </div>
-            <button className="absolute -top-1 -right-2 text-xs text-white bg-linear-to-r from-indigo-500 to-indigo-600 w-4.5 h-4.5 rounded-full flex items-center justify-center font-bold shadow-md hover:shadow-lg transform hover:scale-110 transition-all duration-300 animate-pulse">
-              3
+            <button onClick={() => navigate("/cart")} className="relative">
+              <div className="p-2 hover:bg-indigo-50 rounded-full transition-all duration-300">
+
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 14 14"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="group-hover:scale-110 transition-transform duration-300 cursor-pointer"
+                >
+                  <path
+                    d="M.583.583h2.333l1.564 7.81a1.17 1.17 0 0 0 1.166.94h5.67a1.17 1.17 0 0 0 1.167-.94l.933-4.893H3.5m2.333 8.75a.583.583 0 1 1-1.167 0 .583.583 0 0 1 1.167 0m6.417 0a.583.583 0 1 1-1.167 0 .583.583 0 0 1 1.167 0"
+                    stroke="#615fff"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </div>
+              {cartCount > 0 && (
+                <div className="absolute -top-1 -right-2 text-xs text-white bg-linear-to-r from-indigo-500 to-indigo-600 w-5 h-5 rounded-full flex items-center justify-center font-bold shadow-md hover:shadow-lg transform hover:scale-110 transition-all duration-300 animate-pulse">
+                  {cartCount}
+                </div>
+              )}
             </button>
+
           </div>
 
           <button
@@ -167,7 +184,7 @@ function Navbar() {
             Add Products
           </button>
         </div>
-      </nav>
+      </nav >
     </>
   );
 }

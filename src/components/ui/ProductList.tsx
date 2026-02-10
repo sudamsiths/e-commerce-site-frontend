@@ -1,5 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useCart } from "../../context/CartContext";
+import { ShoppingCart, Check } from "lucide-react";
+import Toast from "./Toast";
 
 interface Product {
   id: string | number;
@@ -14,6 +17,10 @@ interface Product {
 function ProductList() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
+  const [addedItems, setAddedItems] = useState<Set<string | number>>(new Set());
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState("");
+  const { addToCart } = useCart();
 
   const fetchProducts = async () => {
     try {
@@ -37,6 +44,30 @@ function ProductList() {
       return `http://localhost:8080${imageUrl}`;
     }
     return imageUrl;
+  };
+
+  const handleAddToCart = (product: Product) => {
+    addToCart({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      image: getImageUrl(product.imageUrls),
+      category: product.category,
+      description: product.description,
+    });
+
+    // Show success animation
+    setAddedItems((prev) => new Set(prev).add(product.id));
+    setToastMessage(`${product.name} added to cart! 🎉`);
+    setShowToast(true);
+    
+    setTimeout(() => {
+      setAddedItems((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(product.id);
+        return newSet;
+      });
+    }, 2000);
   };
 
   useEffect(() => {
@@ -113,22 +144,19 @@ function ProductList() {
                     ${product.price}
                   </div>
 
-                  <button className="rounded-full bg-purple-900 text-white hover:bg-white hover:text-purple-900 hover:shadow-2xl hover:scale-110 focus:outline-none focus:ring-4 focus:ring-purple-300 w-12 h-12 flex ml-auto transition-all duration-300">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="m-auto"
-                    >
-                      <line x1="12" y1="5" x2="12" y2="19" />
-                      <line x1="5" y1="12" x2="19" y2="12" />
-                    </svg>
+                  <button 
+                    onClick={() => handleAddToCart(product)}
+                    className={`rounded-full text-white hover:shadow-2xl hover:scale-110 focus:outline-none focus:ring-4 focus:ring-purple-300 w-12 h-12 flex ml-auto transition-all duration-300 ${
+                      addedItems.has(product.id) 
+                        ? 'bg-green-600 hover:bg-green-600' 
+                        : 'bg-purple-900 hover:bg-white hover:text-purple-900'
+                    }`}
+                  >
+                    {addedItems.has(product.id) ? (
+                      <Check className="m-auto w-6 h-6" />
+                    ) : (
+                      <ShoppingCart className="m-auto w-5 h-5" />
+                    )}
                   </button>
                 </div>
               </div>
@@ -137,6 +165,14 @@ function ProductList() {
           </div>
         ))}
       </div>
+      
+      {showToast && (
+        <Toast
+          message={toastMessage}
+          type="success"
+          onClose={() => setShowToast(false)}
+        />
+      )}
     </div>
   );
 }

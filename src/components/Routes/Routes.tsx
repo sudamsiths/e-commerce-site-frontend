@@ -4,18 +4,21 @@ import LoginPage from '../pages/LoginPage'
 import Dashboad from '../pages/Dashboad'
 import AddProducts from '../pages/AddProducts'
 import Cart from '../pages/Cart'
+import { CartProvider } from '../../context/CartContext'
 
 function AppRoutes() {
   return (
-    <BrowserRouter>
-    <Routes>
-      <Route path="/signup" element={<RegisterPage />} />
-      <Route path="/" element={<LoginPage />} />
-      <Route path="/dashboard" element={<Dashboad />} />
-      <Route path="/add-product" element = {<AddProducts/>}/>
-      <Route path="/cart" element={<Cart />} />
-    </Routes>
-    </BrowserRouter>
+    <CartProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/signup" element={<RegisterPage />} />
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/dashboard" element={<Dashboad />} />
+          <Route path="/add-product" element = {<AddProducts/>}/>
+          <Route path="/cart" element={<Cart />} />
+        </Routes>
+      </BrowserRouter>
+    </CartProvider>
   )
 }
 
