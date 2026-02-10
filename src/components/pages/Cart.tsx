@@ -8,8 +8,7 @@ function Cart() {
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const tax = subtotal * 0.1;
-  const shipping = subtotal > 500 ? 0 : 15;
-  const total = subtotal + tax + shipping;
+  const total = subtotal + tax;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50 py-8 px-4 sm:px-6 lg:px-8">
@@ -34,7 +33,7 @@ function Cart() {
             </div>
             <h2 className="text-2xl font-bold text-slate-900 mb-2">Your cart is empty</h2>
             <p className="text-slate-600 mb-8">Add some items to get started!</p>
-            <button className="px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all">
+            <button className="px-8 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transform hover:-translate-y-0.5 transition-all" onClick={()=>navigate("/dashboard")}>
               Browse Products
             </button>
           </div>
@@ -131,27 +130,9 @@ function Cart() {
                   <div className="flex justify-between text-slate-600">
                     <span>Shipping</span>
                     <span className="font-semibold">
-                      {shipping === 0 ? (
                         <span className="text-green-600">FREE</span>
-                      ) : (
-                        `$${shipping.toFixed(2)}`
-                      )}
                     </span>
                   </div>
-
-                  {subtotal < 500 && (
-                    <div className="bg-amber-50 border border-amber-200 rounded-lg p-3">
-                      <p className="text-xs text-amber-800">
-                        Add <span className="font-bold">${(500 - subtotal).toFixed(2)}</span> more for FREE shipping!
-                      </p>
-                      <div className="w-full bg-amber-200 rounded-full h-2 mt-2">
-                        <div
-                          className="bg-gradient-to-r from-amber-500 to-orange-500 h-2 rounded-full transition-all duration-300"
-                          style={{ width: `${(subtotal / 500) * 100}%` }}
-                        />
-                      </div>
-                    </div>
-                  )}
 
                   <div className="border-t border-slate-200 pt-4 mt-4">
                     <div className="flex justify-between items-center">
